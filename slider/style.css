@@ -1,0 +1,148 @@
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+h1{
+  font-size: 52px;
+}
+p{
+  font-size: 20px;
+}
+.slides {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: sans-serif;
+}
+.slides-wrapper{
+  display: flex;
+  position: relative;
+  height: 100vh;
+  transition: all 1s ease;
+}
+.slide{
+  width: 100vw;
+  height: 100%;
+  float: left;
+  flex-shrink: 0;
+}
+.text-area{
+  height: 50%;
+  width: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+}
+.text-area div {
+  background-color: rgba(0,212,255, 0.8);
+  margin: 0 auto;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+}
+.text-area p {
+  color: gray;
+}
+.text-area h1 {
+  margin: 20px 0;
+}
+.gradient-section{
+  width: 100%;
+  height: 50%;
+  background: rgb(2,0,36);
+  background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,121,9,1) 31%, rgba(0,212,255,1) 100%);
+}
+#slide-2 .gradient-section{
+  background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(88,121,9,1) 31%, rgba(0,212,255,1) 100%);
+}
+#slide-3 .gradient-section{
+  background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,121,114,1) 31%, rgba(0,212,255,1) 100%);
+}
+.visible {
+	bottom: 0;
+}
+.current {
+	border-color: #000;
+}
+.slider-nav {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  margin: auto;
+  height: 80px;
+  display: flex;
+  justify-content: space-between;
+}
+.slide-left-arrow, .slide-right-arrow{
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  border: solid grey;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+}
+.slide-left-arrow{
+  transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+  margin-right: 20px;
+}
+.slide-right-arrow{
+  transform: rotate(135deg);
+  -webkit-transform: rotate(135deg);
+  margin-left: 20px;
+}
+/*text animation stuff*/
+.slide-left, .slide-right  {
+  width:100%;
+  overflow:hidden;
+  position: relative;
+}
+.slide-left p {
+  animation: slide-left 0.9s;
+}
+.slide-left span, .slide-left h1 {
+  animation: slide-left 0.8s;
+}
+
+.slide-right p {
+  animation: 0.9s slide-right;
+}
+.slide-right span, .slide-right h1 {
+  animation: 0.8s slide-right;
+}
+
+@keyframes slide-left {
+  from {
+    left: 100%;
+    width: 150%; 
+  }
+  to {
+    left: 0%;
+    width: 100%;
+  }
+}
+
+@keyframes slide-right {
+  from {
+    left: -100%;
+    width: 150%; 
+  }
+
+  to {
+    left: 0%;
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .slider-nav{
+    display: none;
+  }
+}
