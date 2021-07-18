@@ -3,6 +3,8 @@ function PuzzleGame(className) {
     let boardLength;
     let colSize;
     let rowSize;
+    let elWidth;
+    let elHeight;
 
     /*
       init function fill cell info to puzzledData array,
@@ -12,16 +14,12 @@ function PuzzleGame(className) {
         const board = document.getElementsByClassName(className)[0];
         boardLength = board.children.length;
         rowSize = colSize = Math.sqrt(boardLength + 1);
+        elWidth = elHeight = 100 / rowSize;
         for (let [index, el] of Object.entries(board.children)) {
             const value = parseInt(el.textContent);
             el.addEventListener('click', onItemClick);
-            const [newRow, newCol] = getRowCol(index);
-            const { offsetWidth, offsetHeight } = el;
-            const newPositionX = newRow * offsetHeight;
-            const newPositionY = newCol * offsetWidth;
-            console.log(newPositionX, newPositionY);
-            el.style.left = newPositionX + 'px';
-            el.style.top = newPositionY + 'px';
+            el.style.width = elWidth + '%';
+            el.style.height = elHeight + '%';
             const newItem = {
                 el,
                 index,
@@ -36,14 +34,6 @@ function PuzzleGame(className) {
             index: boardLength,
             value: null
         });
-        sort();
-    }
-
-
-    function sort() {
-        puzzleData = puzzleData.sort((a, b) => {
-            return a.index - b.index;
-        })
     }
 
     /*
@@ -83,12 +73,6 @@ function PuzzleGame(className) {
 
     }
 
-    function destroy() {
-        puzzleData.forEach(item => {
-            item.el.removeEventListener("click", onItemClick);
-        })
-    }
-
     /* 
       moveItem function call _move and swaping selected item and empty item in puzzleData array
     */
@@ -116,6 +100,19 @@ function PuzzleGame(className) {
     function getRowCol(index) {
         return [index % colSize, parseInt(index / rowSize)];
     }
+
+    /*
+      these function reponsible for recalculate cells x,y depence on screen changes
+    */
+    function setCellPositon() {
+        puzzleData.forEach((item, index) => {
+            if (item.value) _move(item.el, index);
+        })
+    }
+    const screen = window.matchMedia("(max-width: 768px)");
+    screen.addEventListener('change', function (event) {
+        setCellPositon();
+    });
 
     init();
 }
