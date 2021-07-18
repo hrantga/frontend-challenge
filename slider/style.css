@@ -19,7 +19,8 @@ p{
   display: flex;
   position: relative;
   height: 100vh;
-  transition: all 1s ease;
+  right: 0;
+  transition: all 0.5s ease;
 }
 .slide{
   width: 100vw;
@@ -56,10 +57,10 @@ p{
   background: rgb(2,0,36);
   background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,121,9,1) 31%, rgba(0,212,255,1) 100%);
 }
-#slide-2 .gradient-section{
+.slide-2 .gradient-section{
   background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(88,121,9,1) 31%, rgba(0,212,255,1) 100%);
 }
-#slide-3 .gradient-section{
+.slide-3 .gradient-section{
   background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,121,114,1) 31%, rgba(0,212,255,1) 100%);
 }
 .visible {
@@ -105,17 +106,17 @@ p{
   position: relative;
 }
 .slide-left p {
-  animation: slide-left 0.9s;
+  animation: slide-left 0.7s ;
 }
 .slide-left span, .slide-left h1 {
-  animation: slide-left 0.8s;
+  animation: slide-left 0.6s;
 }
 
 .slide-right p {
-  animation: 0.9s slide-right;
+  animation: 0.7s slide-right;
 }
 .slide-right span, .slide-right h1 {
-  animation: 0.8s slide-right;
+  animation: 0.6s slide-right;
 }
 
 @keyframes slide-left {

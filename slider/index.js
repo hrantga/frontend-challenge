@@ -1,3 +1,6 @@
+/*
+  swipe resposible to handel touchemove left and right
+*/
 class Swipe {
     constructor(element) {
         this.xDown = null;
@@ -18,7 +21,9 @@ class Swipe {
 
         return this;
     }
-
+    /* 
+       onUp and onDown in case if we will meed detect swipe by y axis 
+    */
     onUp(callback) {
         this.onUp = callback;
 
@@ -31,6 +36,9 @@ class Swipe {
         return this;
     }
 
+    /* 
+       handleTouchMove funtion desided which direction must swipe slider
+    */
     handleTouchMove(evt) {
         if (!this.xDown || !this.yDown) {
             return;
@@ -42,7 +50,8 @@ class Swipe {
         this.xDiff = this.xDown - xUp;
         this.yDiff = this.yDown - yUp;
 
-        if (Math.abs(this.xDiff) > Math.abs(this.yDiff)) { // Most significant.
+        //checking swipe is by x or y axis
+        if (Math.abs(this.xDiff) > Math.abs(this.yDiff)) {
             if (this.xDiff > 0) {
                 this.onLeft();
             } else {
@@ -56,26 +65,32 @@ class Swipe {
             }
         }
 
-        // Reset values.
+        // reset values
         this.xDown = null;
         this.yDown = null;
     }
 
-    touchStart (evt) {
+    touchStart(evt) {
         this.xDown = evt.touches[0].clientX;
         this.yDown = evt.touches[0].clientY;
     }
 
 
-    touchMove (evt) {
+    touchMove(evt) {
         this.handleTouchMove(evt);
     }
 
+    /* 
+        adding event listeners on touch 
+    */
     subscribe() {
         this.element.addEventListener('touchstart', this.touchStart, false);
         this.element.addEventListener('touchmove', this.touchMove, false);
     }
 
+    /* 
+       call destroy in case if we don`t need slider swipe anymore
+    */
     destroy() {
         this.element.removeEventListener('touchstart', this.touchStart, false);
         this.element.removeEventListener('touchmove', this.touchMove, false);
@@ -83,6 +98,9 @@ class Swipe {
     }
 }
 
+/* 
+    Slider contain our slider main functionality 
+*/
 class Slider {
     constructor(element) {
         this.element = element;
@@ -92,17 +110,18 @@ class Slider {
         this.current = 1;
     }
 
+    /* 
+      here we geting slider elemnts from dom, adding event listeners on arrow buttons and on window 
+    */
     init() {
         this.sliders = document.getElementsByClassName('slide');
         this.wrapper = document.querySelector('.slides-wrapper');
         this.count = this.sliders.length;
-        const { offsetWidth } = this.sliders[0];
         this.slideLeft = this.slideLeft.bind(this);
         this.slideRight = this.slideRight.bind(this);
-        // this.wrapper.style.width = offsetWidth * this.count + 'px';
         this.element.getElementsByClassName('slide-left-arrow')[0].addEventListener('click', this.slideLeft);
         this.element.getElementsByClassName('slide-right-arrow')[0].addEventListener('click', this.slideRight);
-        window.addEventListener('resize', () => this.setSlidePosition());        
+        window.addEventListener('resize', () => this.setSlidePosition());
     }
 
     slideLeft() {
@@ -135,6 +154,9 @@ class Slider {
         }
     }
 
+    /* 
+       call destroy in case if we don`t need slider anymore
+    */
     destroy() {
         this.element.classList.remove('slide-left');
         this.element.classList.remove('slide-right');
@@ -142,12 +164,14 @@ class Slider {
         this.element.getElementsByClassName('slide-right-arrow')[0].removeEventListener('click', this.slideRight);
     }
 
+    /* 
+       after window resize reset slide possion
+    */
     setSlidePosition() {
         if (this.current === 1) {
             return
         }
         this.wrapper.style.right = (this.current - 1) * this.sliders[0].offsetWidth + "px";
-
     }
 }
 
@@ -157,6 +181,8 @@ function createSlider(elementId) {
     const slider = new Slider(el);
     swiper.onLeft(() => slider.slideLeft());
     swiper.onRight(() => slider.slideRight());
+    swiper.onUp(() => console.log('swiped Up!'));
+    swiper.onDown(() => console.log('swiped Down!'));
 
     swiper.subscribe();
     slider.init();
@@ -169,6 +195,7 @@ function createSlider(elementId) {
     }
 }
 
-document.addEventListener('DOMContentLoaded', function (event) {
+window.onload = function () {
     createSlider('slides');
-})
+
+}
