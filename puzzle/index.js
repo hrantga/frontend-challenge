@@ -1,3 +1,10 @@
+window.onload = start;
+
+function start() {
+    window.pazzleNewGame = new PuzzleGame('puzzle');
+    
+}
+
 function PuzzleGame(className) {
     let puzzleData = [];
     let boardLength;
@@ -5,7 +12,6 @@ function PuzzleGame(className) {
     let rowSize;
     let elWidth;
     let elHeight;
-
     /*
       init function fill cell info to puzzledData array,
       set cells position x, y and adding event listener on cell click
@@ -22,7 +28,6 @@ function PuzzleGame(className) {
             el.style.height = elHeight + '%';
             const newItem = {
                 el,
-                index,
                 value
             };
             _move(el, index)
@@ -31,7 +36,6 @@ function PuzzleGame(className) {
 
         puzzleData.push({
             el: null,
-            index: boardLength,
             value: null
         });
     }
@@ -78,8 +82,8 @@ function PuzzleGame(className) {
     */
     function moveItem(item, newIndex, itemIndex) {
         _move(item.el, newIndex);
-        item.index = newIndex;
         [puzzleData[itemIndex], puzzleData[newIndex]] = [puzzleData[newIndex], puzzleData[itemIndex]];
+        checkGameOver();
     }
 
     /*
@@ -92,6 +96,33 @@ function PuzzleGame(className) {
         const newPositionY = newCol * offsetHeight;
         item.style.left = newPositionX + 'px';
         item.style.top = newPositionY + 'px';
+    }
+
+    /* 
+      check gave over or not
+    */
+    function checkGameOver() {
+        let success = true;
+        for (const [index, el] of puzzleData.entries()) {
+            if (el.value == null) {
+                continue;
+            }
+            if (el.value !== +index + 1) {
+                success = false;
+                break;
+            }
+        }
+        if (success) console.log('Game Over!')
+    }
+
+    /* 
+      schuffle puzzleData array
+    */
+    this.schufflePuzzle = () => {
+        puzzleData = puzzleData.sort(() => Math.random() - 0.5);
+        puzzleData.forEach((item, index) => {
+          if(item.value != null)  _move(item.el, index)
+        })
     }
 
     /* 
@@ -117,6 +148,6 @@ function PuzzleGame(className) {
     init();
 }
 
-document.addEventListener('DOMContentLoaded', function (event) {
-    PuzzleGame('puzzle')
-})
+// document.addEventListener('DOMContentLoaded', function (event) {
+    // window.pazzleNewGame = 
+// })
